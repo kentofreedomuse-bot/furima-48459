@@ -1,8 +1,11 @@
-@import "reset";
-@import "items/index";
-@import "items/exhibit-btn";
-@import "shared/header";
-@import "shared/footer";
+/*
+ *= require reset
+ *= require items/index
+ *= require items/exhibit-btn
+ *= require shared/header
+ *= require shared/footer
+ */
+
 
 /* FURIMA app stylesheet */
 
