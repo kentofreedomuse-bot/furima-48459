@@ -11,6 +11,8 @@
 | nickname           | string | null: false |
 | last_name          | string | null: false |
 | first_name         | string | null: false |
+| last_name_kana     | string | null: false |
+| first_name_kana    | string | null: false |
 | birthday           | date   | null: false |
 
 ### Association
@@ -23,22 +25,21 @@
 
 ## items テーブル
 
-| Column             | Type        | Options     |
-| ------------------ | ----------- | ----------- |
-| name               | string      | null: false |
-| explanation        | text        | null: false |
-| category           | integer     | null: false |
-| status             | integer     | null: false |
-| shipping_fee       | integer     | null: false |
-| region             | integer     | null: false |
-| days               | integer     | null: false |
-| price              | string      | null: false |
-| user               | references  | null: false , foreign_key: true|
+| Column                | Type        | Options     |
+| --------------------- | ----------- | ----------- |
+| name                  | string      | null: false |
+| explanation           | text        | null: false |
+| category_id           | integer     | null: false |
+| status_id             | integer     | null: false |
+| shipping_fee_id       | integer     | null: false |
+| region_id             | integer     | null: false |
+| required_day_id       | integer     | null: false |
+| price                 | integer     | null: false |
+| user                  | references  | null: false , foreign_key: true|
 
 ### Association
 
 - belongs_to :user
-- has_one :payment
 - has_one :order
 
 
@@ -48,10 +49,11 @@
 | Column             | Type        | Options     |
 | ------------------ | ----------- | ----------- |
 | user               | references  | null: false , foreign_key: true|
-| items              | references  | null: false , foreign_key: true|
+| item               | references  | null: false , foreign_key: true|
 
 ### Association
 
+- belongs_to :user
 - belongs_to :item
 - has_one :payment
 
@@ -62,7 +64,7 @@
 | Column             | Type        | Options     |
 | ------------------ | ----------- | ----------- |
 | postcode           | string      | null: false |
-| prefecture         | string      | null: false |
+| region_id          | integer     | null: false |
 | city               | string      | null: false |
 | block              | string      | null: false |
 | building           | string      |
@@ -71,5 +73,4 @@
 
 ### Association
 
-- belongs_to :item
 - belongs_to :order
