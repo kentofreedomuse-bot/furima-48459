@@ -2,8 +2,13 @@
  *= require reset
  *= require items/index
  *= require items/exhibit-btn
+ *= require shared/error_messages
  *= require shared/header
  *= require shared/footer
+ *= require shared/second_header
+ *= require shared/second_footer
+ *= require user/registration
+ *= require user/login
  */
 
 
