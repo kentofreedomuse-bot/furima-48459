@@ -29,6 +29,6 @@ class ItemsController < ApplicationController
       :region_id,
       :required_day_id,
       :price
-    )
+    ).merge(user_id: current_user.id)
   end
 end
