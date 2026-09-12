@@ -7,7 +7,7 @@
     <h2 class="items-sell-title">商品の情報を入力</h2>
     <%= form_with model: @item, local: true do |f| %>
 
-    <%= render 'shared/error_messages', model: f.object %>
+    <%= render 'shared/error_messages', model: @item %>
 
     <%# 商品画像 %>
     <div class="img-upload">
@@ -85,7 +85,7 @@
     <%# /配送について %>
 
     <%# 販売価格 %>
-    <div class="sell-price">
+    <div class="sell-price" data-controller="price">
       <div class="weight-bold-text question-text">
         <span>販売価格<br>(¥300〜9,999,999)</span>
         <a class="question" href="#">?</a>
@@ -97,18 +97,18 @@
             <span class="indispensable">必須</span>
           </div>
           <span class="sell-yen">¥</span>
-          <%= f.text_field :price, class:"price-input", id:"item-price", placeholder:"例）300" %>
+          <%= f.text_field :price, class:"price-input", id:"item-price", placeholder:"半角数字で入力", data: { price_target: "input", action: "input->price#calculate" } %>
         </div>
         <div class="price-content">
           <span>販売手数料 (10%)</span>
           <span>
-            <span id='add-tax-price'></span>円
+            <span id='add-tax-price' data-price-target="tax"></span>円
           </span>
         </div>
         <div class="price-content">
           <span>販売利益</span>
           <span>
-            <span id='profit'></span>円
+            <span id='profit' data-price-target="profit"></span>円
           </span>
         </div>
       </div>
