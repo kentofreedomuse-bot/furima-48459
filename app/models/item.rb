@@ -1,11 +1,11 @@
 class Item < ApplicationRecord
   extend ActiveHash::Associations::ActiveRecordExtensions
   belongs_to :user
-  belongs_to :category, optional: true
-  belongs_to :status, optional: true
-  belongs_to :shipping_fee, optional: true
-  belongs_to :region, optional: true
-  belongs_to :required_days, optional: true
+  belongs_to :category
+  belongs_to :status
+  belongs_to :shipping_fee
+  belongs_to :region
+  belongs_to :required_days
   validates :name, presence: true
   validates :explanation, presence: true
   validates :category_id, presence: true, numericality: { other_than: 0 }
