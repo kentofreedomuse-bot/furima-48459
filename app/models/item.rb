@@ -5,7 +5,7 @@ class Item < ApplicationRecord
   belongs_to :status
   belongs_to :shipping_fee
   belongs_to :region
-  belongs_to :required_days
+  belongs_to :required_day, class_name: 'RequiredDays', foreign_key: :required_day_id
   validates :name, presence: true
   validates :explanation, presence: true
   validates :category_id, presence: true, numericality: { other_than: 0 }
