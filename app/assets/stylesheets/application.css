@@ -3,6 +3,7 @@
  *= require items/index
  *= require items/exhibit-btn
  *= require items/new
+ *= require items/show
  *= require shared/error_messages
  *= require shared/header
  *= require shared/footer
