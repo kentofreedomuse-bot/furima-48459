@@ -3,6 +3,10 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["input", "tax", "profit"]
 
+  connect() {
+    this.calculate()
+  }
+
   calculate() {
     const price = Number(this.inputTarget.value)
 
