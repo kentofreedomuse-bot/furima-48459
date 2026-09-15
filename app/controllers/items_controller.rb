@@ -1,13 +1,13 @@
 class ItemsController < ApplicationController
-  before_action :authenticate_user!, only: %i[new create edit]
-  before_action :move_to_index, only: :edit
+  before_action :authenticate_user!, only: %i[new create edit update]
+  before_action :set_item, only: %i[show edit update]
+  before_action :move_to_index, only: %i[edit update]
 
   def index
     @items = Item.order(created_at: :desc)
   end
 
   def show
-    @item = Item.find(params[:id])
   end
 
   def new
@@ -15,11 +15,9 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    @item = Item.find(params[:id])
   end
 
   def update
-    @item = Item.find(params[:id])
     if @item.update(item_params)
       redirect_to item_path(@item)
     else
@@ -38,8 +36,11 @@ class ItemsController < ApplicationController
 
   private
 
-  def move_to_index
+  def set_item
     @item = Item.find(params[:id])
+  end
+
+  def move_to_index
     return if @item.user == current_user
 
     redirect_to root_path
