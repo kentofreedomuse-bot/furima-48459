@@ -56,6 +56,7 @@ RSpec.describe Item, type: :model do
       it 'priceが空では出品できない' do
         @item.price = ''
         @item.valid?
+        expect(@item.errors.full_messages.first).to eq("Price can't be blank")
         expect(@item.errors.full_messages).to include("Price can't be blank")
       end
       it 'priceが300未満では出品できない' do

@@ -13,8 +13,9 @@ class Item < ApplicationRecord
   validates :shipping_fee_id, presence: true, numericality: { other_than: 0 }
   validates :region_id, presence: true, numericality: { other_than: 0 }
   validates :required_day_id, presence: true, numericality: { other_than: 0 }
-  validates :price, presence: true,
-                    numericality: { only_integer: true, greater_than_or_equal_to: 300, less_than_or_equal_to: 9_999_999 }
+  validates :price, presence: true
+  validates :price, numericality: { only_integer: true, greater_than_or_equal_to: 300, less_than_or_equal_to: 9_999_999 },
+                    allow_blank: true
   has_one_attached :image
   validates :image, presence: true
 end
