@@ -2,10 +2,11 @@ class OrderForm
   include ActiveModel::Model
   include ActiveModel::Attributes
 
-  attr_accessor :user_id, :item_id, :postcode, :region_id, :city, :block, :building, :phone_number
+  attr_accessor :user_id, :item_id, :token, :postcode, :region_id, :city, :block, :building, :phone_number
 
   validates :user_id, presence: true
   validates :item_id, presence: true
+  validates :token, presence: true
   validates :postcode, presence: { message: '郵便番号を入力してください' }
   validates :postcode, format: { with: /\A\d{3}-\d{4}\z/, message: '郵便番号はハイフンを含む正しい形式で入力してください' }, allow_blank: true
   validates :region_id, presence: { message: '都道府県を選択してください' }, numericality: { other_than: 0, message: '都道府県を選択してください' }
@@ -17,7 +18,7 @@ class OrderForm
   def save
     return false unless valid?
 
-    order = Order.create!(user_id: user_id, item_id: item_id)
+    order = Order.create!(user_id: user_id, item_id: item_id, token: token)
     Payment.create!(
       order_id: order.id,
       postcode: postcode,

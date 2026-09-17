@@ -1,59 +1,91 @@
 require 'rails_helper'
 
 RSpec.describe OrderForm, type: :model do
-  let(:user) do
-    User.create!(email: 'order_form@example.com', password: 'Password1', password_confirmation: 'Password1', nickname: '購入者',
-                 last_name: '山田', first_name: '太郎', last_name_kana: 'ヤマダ', first_name_kana: 'タロウ', birthday: '1990-01-01')
-  end
-  let(:item) do
-    item = Item.new(
-      user: user,
-      name: 'フォーム商品',
-      explanation: '説明',
-      category_id: 1,
-      status_id: 1,
-      shipping_fee_id: 1,
-      region_id: 1,
-      required_day_id: 1,
-      price: 2000
-    )
-    item.image.attach(io: StringIO.new('test image'), filename: 'test.jpg', content_type: 'image/jpeg')
-    item.save!
-    item
+  let(:user) { create(:user) }
+  let(:item) { create(:item, user: user) }
+
+  before do
+    Payment.delete_all
+    Order.delete_all
+    @order_form = FactoryBot.build(:order_form, user: user, item: item)
   end
 
-  describe '#save' do
-    it '正常な購入情報を保存できる' do
-      form = described_class.new(
-        user_id: user.id,
-        item_id: item.id,
-        postcode: '123-4567',
-        region_id: 27,
-        city: '大阪市',
-        block: '北区1-1-1',
-        building: 'テストビル',
-        phone_number: '09012345678'
-      )
+  describe '購入処理' do
+    context '購入がうまくいくとき' do
+      it '全ての値が正しく入力されていれば購入できる' do
+        expect(@order_form).to be_valid
+        expect(@order_form.save).to be true
+        expect(Order.count).to eq(1)
+      end
 
-      expect(form.save).to be true
-      expect(Order.count).to eq(1)
-      expect(Payment.count).to eq(1)
+      it 'buildingが空でも購入できる' do
+        @order_form.building = nil
+        expect(@order_form).to be_valid
+        expect(@order_form.save).to be true
+        expect(Order.count).to eq(1)
+      end
     end
 
-    it '不正な値では保存できない' do
-      form = described_class.new(
-        user_id: user.id,
-        item_id: item.id,
-        postcode: '1234',
-        region_id: 0,
-        city: '',
-        block: '',
-        phone_number: '123'
-      )
+    context '購入がうまくいかないとき' do
+      it 'user_idが空では購入できない' do
+        @order_form.user_id = nil
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include("User can't be blank")
+      end
 
-      expect(form.save).to be false
-      expect(form.errors.full_messages).to include('Postcode 郵便番号はハイフンを含む正しい形式で入力してください')
-      expect(Order.count).to eq(0)
+      it 'item_idが空では購入できない' do
+        @order_form.item_id = nil
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include("Item can't be blank")
+      end
+
+      it 'tokenが空では購入できない' do
+        @order_form.token = nil
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include("Token can't be blank")
+      end
+
+      it 'postcodeが空では購入できない' do
+        @order_form.postcode = nil
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include('Postcode 郵便番号を入力してください')
+      end
+
+      it 'postcodeにハイフンが含まれていない場合は購入できない' do
+        @order_form.postcode = '1234567'
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include('Postcode 郵便番号はハイフンを含む正しい形式で入力してください')
+      end
+
+      it 'region_idが0の場合は購入できない' do
+        @order_form.region_id = 0
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include('Region 都道府県を選択してください')
+      end
+
+      it 'cityが空では購入できない' do
+        @order_form.city = nil
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include('City 市区町村を入力してください')
+      end
+
+      it 'blockが空では購入できない' do
+        @order_form.block = nil
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include('Block 番地を入力してください')
+      end
+
+      it 'phone_numberが空では購入できない' do
+        @order_form.phone_number = nil
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include('Phone number 電話番号を入力してください')
+      end
+
+      it 'phone_numberにハイフンが含まれている場合は購入できない' do
+        @order_form.phone_number = '090-1234-5678'
+        @order_form.valid?
+        expect(@order_form.errors.full_messages).to include('Phone number 電話番号は10桁または11桁の数字で入力してください')
+      end
     end
   end
 end

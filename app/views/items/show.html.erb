@@ -35,7 +35,7 @@
 
 
     <% if user_signed_in? && @item.user != current_user && @item.order.blank? %>
-      <%= link_to "購入画面に進む", new_item_order_path(@item), class:"item-red-btn"%>
+      <%= link_to "購入画面に進む", new_item_order_path(@item), data: {turbo: false}, class:"item-red-btn"%>
     <% end %>
 
 

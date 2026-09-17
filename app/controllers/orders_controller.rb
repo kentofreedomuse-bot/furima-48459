@@ -14,7 +14,14 @@ class OrdersController < ApplicationController
   def create
     @order_form = OrderForm.new(order_form_params)
 
-    if @order_form.save
+    if @order_form.valid?
+      Payjp.api_key = ENV['PAYJP_SECRET_KEY']
+      Payjp::Charge.create(
+        amount: @item.price,
+        card: params[:token],
+        currency: 'jpy'
+      )
+      @order_form.save
       redirect_to root_path
     else
       render :index, status: :unprocessable_entity
@@ -33,14 +40,15 @@ class OrdersController < ApplicationController
 
   def move_to_index
     return if @item.user != current_user && @item.order.blank?
-    
+
     redirect_to root_path
   end
 
   def order_form_params
     params.require(:order_form).permit(:postcode, :region_id, :city, :block, :building, :phone_number).merge(
       user_id: current_user.id,
-      item_id: @item.id
+      item_id: @item.id,
+      token: params[:token]
     )
   end
 end
