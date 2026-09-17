@@ -1,13 +1,13 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_item_for_order, only: %i[index new create]
+  before_action :set_order_form, only: %i[index new create]
+  before_action :move_to_index, only: %i[index new create]
 
   def index
-    @order_form = OrderForm.new
   end
 
   def new
-    @order_form = OrderForm.new
     render :index
   end
 
@@ -25,6 +25,16 @@ class OrdersController < ApplicationController
 
   def set_item_for_order
     @item = Item.find(params[:item_id]) if params[:item_id].present?
+  end
+
+  def set_order_form
+    @order_form = OrderForm.new
+  end
+
+  def move_to_index
+    return if @item.user != current_user && @item.order.blank?
+    
+    redirect_to root_path
   end
 
   def order_form_params
