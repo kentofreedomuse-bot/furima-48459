@@ -27,7 +27,7 @@
       </span>
     </div>
 
-    <% if @item.user == current_user %>
+    <% if @item.user == current_user && @item.order.blank? %>
       <%= link_to "商品の編集", edit_item_path(@item), method: :get, class: "item-red-btn" %>
       <p class="or-text">or</p>
       <%= link_to "削除", item_path(@item), data: {turbo_method: :delete}, class:"item-destroy" %>
