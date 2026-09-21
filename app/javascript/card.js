@@ -26,9 +26,10 @@ const pay = () => {
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-
+    
     payjp.createToken(numberElement).then(function (response) {
       if (response.error) {
+        form.submit();
         return;
       }
 
