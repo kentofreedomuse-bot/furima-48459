@@ -1,55 +1,105 @@
-.header {
-  width: 100%;
-  background-color: #fff;
-  border-bottom: 1px solid #eee;
+* {
+  box-sizing: border-box;
 }
 
-.header-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 18px 32px;
+.top-page-header {
+  width: 100vw;
+  padding: 2vh 15vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-bar-contents {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.logo {
+.furima-icon {
+  width: 10vw;
+  margin-right: 10vw;
+}
+
+.search-form {
+  width: 65vw;
+  height: 5vh;
   display: flex;
-  align-items: center;
+  margin-bottom: 5px;
+}
+
+.search-form>.input-box {
+  width: 100%;
+  height: 5vh;
+  padding-left: 10px;
+}
+
+.search-button {
+  width: 5vh;
+  border: 0;
+  cursor: pointer;
+  background-color: #3ccace;
+  padding: 8px;
+}
+
+.search-icon {
+  width: 100%;
 }
 
 .nav {
+  font-size: 18px;
+  font-family: 'Open Sans', sans-serif;
   display: flex;
-  align-items: center;
-  gap: 18px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 1vh 0;
 }
 
-.nav form {
-  margin: 0;
+.lists-left {
+  display: flex;
+  min-width: 200px;
+
 }
 
-.nav a {
-  color: #333;
-  font-size: 14px;
+.category-list {
   text-decoration: none;
+  margin-right: 3vw;
+  color: #333333;
 }
+
+.brand-list {
+  text-decoration: none;
+  color: #333333;
+}
+
+.lists-right {
+  display: flex;
+  list-style: none;
+  align-items: flex-end;
+}
+
 
 .user-nickname {
-  color: #333;
-  font-size: 14px;
+  text-decoration: none;
+  margin-right: 3vw;
+  color: #333333;
   font-weight: bold;
 }
 
-.nav .logout-button {
-  appearance: none;
-  border: 0;
-  display: inline;
-  padding: 0;
-  background: none;
-  color: #333;
-  cursor: pointer;
-  font-size: 14px;
-  font-family: inherit;
-  line-height: inherit;
+
+.logout {
   text-decoration: none;
+  color: #333333;
+}
+
+.login {
+  text-decoration: none;
+  line-height: 32px;
+  margin-right: 3vw;
+  color: #333333;
+}
+
+.sign-up {
+  text-decoration: none;
+  color: #333333;
 }
